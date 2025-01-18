@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node src/server.ts",
+    "built": "tsc",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,6 @@
     "url": "https://github.com/jasleenkalsi/BackEnd_Assignment-1/issues"
   },
   "homepage": "https://github.com/jasleenkalsi/BackEnd_Assignment-1#readme",
-  "description": "",
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.0",
@@ -35,5 +36,9 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "description": ""
 }
