@@ -1,10 +1,11 @@
 {
   "name": "backend_assignment-1",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Back-end assignment with Node.js, Express, Swagger, Jest, and TypeScript",
+  "main": "src/server.ts",
   "scripts": {
+    "dev": "nodemon src/server.ts",
     "start": "ts-node src/server.ts",
-    "built": "tsc",
     "test": "jest"
   },
   "repository": {
@@ -39,6 +40,5 @@
   },
   "directories": {
     "test": "test"
-  },
-  "description": ""
+  }
 }

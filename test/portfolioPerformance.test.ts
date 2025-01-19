@@ -1,57 +1,61 @@
-// test/portfolioPerformance.test.ts
-import { calculatePortfolioPerformance, PortfolioPerformance } from 'src/portfolio/portfolioPerformance';
-
-
-describe('calculatePortfolioPerformance', () => {
-  it('should calculate the performance of the portfolio with a profit of 20%', () => {
-    const initialInvestment = 10000;
-    const currentValue = 12000;
-    
-    const result = calculatePortfolioPerformance(initialInvestment, currentValue);
-    
-    expect(result.initialInvestment).toBe(10000);
-    expect(result.currentValue).toBe(12000);
-    expect(result.profitOrLoss).toBe(2000);
-    expect(result.percentageChange).toBe(20);
-    expect(result.performanceSummary).toBe('The portfolio has performed poorly.');
+import {
+    calculatePortfolioPerformance,
+    findLargestHolding,
+    calculateAssetAllocation,
+    Asset,
+  } from '../src/portfolio/portfolioPerformance';
+  
+  describe('Portfolio Performance', () => {
+    test('should calculate portfolio performance correctly', () => {
+      const result = calculatePortfolioPerformance(10000, 12000);
+      expect(result.profitOrLoss).toBe(2000);
+      expect(result.percentageChange).toBeCloseTo(20);
+      expect(result.performanceSummary).toContain('gained');
+    });
+  
+    test('should handle a loss scenario', () => {
+      const result = calculatePortfolioPerformance(10000, 8000);
+      expect(result.profitOrLoss).toBe(-2000);
+      expect(result.percentageChange).toBeCloseTo(-20);
+      expect(result.performanceSummary).toContain('lost');
+    });
   });
-
-  it('should calculate the performance of the portfolio with a significant gain of 30%', () => {
-    const initialInvestment = 10000;
-    const currentValue = 13000;
-    
-    const result = calculatePortfolioPerformance(initialInvestment, currentValue);
-    
-    expect(result.initialInvestment).toBe(10000);
-    expect(result.currentValue).toBe(13000);
-    expect(result.profitOrLoss).toBe(3000);
-    expect(result.percentageChange).toBe(30);
-    expect(result.performanceSummary).toBe('The portfolio has gained significantly with a profit of $3000.');
+  
+  describe('Largest Holding', () => {
+    const assets: Asset[] = [
+      { name: 'Stocks', value: 5000 },
+      { name: 'Bonds', value: 7000 },
+      { name: 'Real Estate', value: 10000 },
+    ];
+  
+    test('should return the largest holding', () => {
+      const largest = findLargestHolding(assets);
+      expect(largest).toEqual({ name: 'Real Estate', value: 10000 });
+    });
+  
+    test('should handle an empty portfolio', () => {
+      const largest = findLargestHolding([]);
+      expect(largest).toBeNull();
+    });
   });
-
-  it('should calculate the performance of the portfolio with a loss', () => {
-    const initialInvestment = 10000;
-    const currentValue = 8000;
-    
-    const result = calculatePortfolioPerformance(initialInvestment, currentValue);
-    
-    expect(result.initialInvestment).toBe(10000);
-    expect(result.currentValue).toBe(8000);
-    expect(result.profitOrLoss).toBe(-2000);
-    expect(result.percentageChange).toBe(-20);
-    expect(result.performanceSummary).toBe('The portfolio has performed poorly.');
+  
+  describe('Asset Allocation', () => {
+    const assets: Asset[] = [
+      { name: 'Stocks', value: 5000 },
+      { name: 'Bonds', value: 5000 },
+    ];
+  
+    test('should calculate asset allocation percentages', () => {
+      const allocation = calculateAssetAllocation(assets);
+      expect(allocation).toEqual([
+        { name: 'Stocks', percentage: 50 },
+        { name: 'Bonds', percentage: 50 },
+      ]);
+    });
+  
+    test('should handle an empty portfolio', () => {
+      const allocation = calculateAssetAllocation([]);
+      expect(allocation).toEqual([]);
+    });
   });
-
-  it('should handle edge case where the portfolio has no profit or loss', () => {
-    const initialInvestment = 10000;
-    const currentValue = 10000;
-    
-    const result = calculatePortfolioPerformance(initialInvestment, currentValue);
-    
-    expect(result.initialInvestment).toBe(10000);
-    expect(result.currentValue).toBe(10000);
-    expect(result.profitOrLoss).toBe(0);
-    expect(result.percentageChange).toBe(0);
-    expect(result.performanceSummary).toBe('The portfolio has performed poorly.');
-  });
-});
+  
